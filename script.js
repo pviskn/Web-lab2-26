@@ -88,6 +88,29 @@ main.append(taskSection);
 // добавление, удаление и выполнение задач
 const tasks = [];
 
+// фильтрация задач
+function filterTasks() {
+    const filter = filterSelect.value;
+
+    taskList.querySelectorAll('.task-item').forEach(item => {
+        const task = tasks.find(t => t.id === Number(item.dataset.id));
+
+        if (!task) {
+            return;
+        }
+
+        if (filter === 'all') {
+            item.style.display = '';
+        } else if (filter === 'done') {
+            item.style.display = task.done ? '' : 'none';
+        } else {
+            item.style.display = task.done ? 'none' : '';
+        }
+    });
+}
+
+filterSelect.addEventListener('change', filterTasks);
+
 form.addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -109,6 +132,7 @@ form.addEventListener('submit', function(event) {
 
     const item = document.createElement('li');
     item.className = 'task-item';
+    item.dataset.id = task.id;
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -117,6 +141,7 @@ form.addEventListener('submit', function(event) {
     checkbox.addEventListener('change', function() {
         task.done = checkbox.checked;
         item.classList.toggle('completed', task.done);
+        filterTasks();
     });
 
     const taskText = document.createElement('span');
@@ -190,6 +215,7 @@ form.addEventListener('submit', function(event) {
         }
 
         item.remove();
+        filterTasks();
 
         if (tasks.length === 0) {
             emptyMessage.hidden = false;
@@ -200,6 +226,7 @@ form.addEventListener('submit', function(event) {
     taskList.append(item);
 
     emptyMessage.hidden = true;
+    filterTasks();
 
     form.reset();
 });
