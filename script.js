@@ -1,3 +1,4 @@
+
 const style = document.createElement('link');
 style.rel = 'stylesheet';
 style.href = 'style.css';
@@ -18,6 +19,7 @@ header.append(title, description);
 main.append(header);
 document.body.append(main);
 
+// добавление задачи
 const form = document.createElement('form');
 form.className = 'task-form';
 
@@ -37,6 +39,7 @@ addButton.textContent = 'Добавить';
 form.append(taskInput, dateInput, addButton);
 main.append(form);
 
+// поиск, фильтрация
 const controls = document.createElement('section');
 controls.className = 'controls';
 
@@ -46,7 +49,7 @@ searchInput.placeholder = 'Поиск задачи';
 
 const filterSelect = document.createElement('select');
 
-const filters = ['Все задачи', 'Завершенные', 'Незавершенные'];
+const filters = ['Все задачи', 'Выполненные', 'Невыполненные'];
 
 filters.forEach((filter, index) => {
     const option = document.createElement('option');
@@ -69,6 +72,7 @@ sorts.forEach((sort, index) => {
 controls.append(searchInput, filterSelect, sortSelect);
 main.append(controls);
 
+// задачи
 const taskSection = document.createElement('section');
 taskSection.className = 'task-section';
 
@@ -81,4 +85,61 @@ emptyMessage.textContent = 'Список пуст';
 
 taskSection.append(taskList, emptyMessage);
 main.append(taskSection);
+
+// добавление и удаление
+const tasks = [];
+
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const text = taskInput.value.trim();
+    const date = dateInput.value;
+
+    if (text === '' || date === '') {
+        return;
+    }
+
+    const task = {
+        id: Date.now(),
+        text: text,
+        date: date,
+        done: false
+    };
+
+    tasks.push(task);
+
+    const item = document.createElement('li');
+    item.className = 'task-item';
+
+    const taskText = document.createElement('span');
+    taskText.textContent = task.text;
+
+    const taskDate = document.createElement('span');
+    taskDate.textContent = task.date;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Удалить';
+    deleteButton.className = 'delete-button';
+
+    deleteButton.addEventListener('click', function() {
+        const index = tasks.findIndex(t => t.id === task.id);
+
+        if (index !== -1) {
+            tasks.splice(index, 1);
+        }
+
+        item.remove();
+
+        if (tasks.length === 0) {
+            emptyMessage.hidden = false;
+        }
+    });
+
+    item.append(taskText, taskDate, deleteButton);
+    taskList.append(item);
+
+    emptyMessage.hidden = true;
+
+    form.reset();
+});
 
