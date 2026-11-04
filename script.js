@@ -1,4 +1,3 @@
-
 const style = document.createElement('link');
 style.rel = 'stylesheet';
 style.href = 'style.css';
@@ -126,6 +125,58 @@ form.addEventListener('submit', function(event) {
     const taskDate = document.createElement('span');
     taskDate.textContent = task.date;
 
+    const taskInfo = document.createElement('div');
+    taskInfo.className = 'task-info';
+
+    taskInfo.append(taskText, taskDate);
+
+    // редактирование
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Изменить';
+    editButton.className = 'edit-button';
+
+    editButton.addEventListener('click', function() {
+        const editInput = document.createElement('input');
+        editInput.type = 'text';
+        editInput.value = task.text;
+
+        const editDate = document.createElement('input');
+        editDate.type = 'date';
+        editDate.value = task.date;
+
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Сохранить';
+
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = 'Отмена';
+
+        taskInfo.replaceChildren(editInput, editDate);
+        item.replaceChildren(checkbox, taskInfo, saveButton, cancelButton);
+
+        saveButton.addEventListener('click', function() {
+            const newText = editInput.value.trim();
+            const newDate = editDate.value;
+
+            if (newText === '' || newDate === '') {
+                return;
+            }
+
+            task.text = newText;
+            task.date = newDate;
+
+            taskText.textContent = task.text;
+            taskDate.textContent = task.date;
+
+            taskInfo.replaceChildren(taskText, taskDate);
+            item.replaceChildren(checkbox, taskInfo, editButton, deleteButton);
+        });
+
+        cancelButton.addEventListener('click', function() {
+            taskInfo.replaceChildren(taskText, taskDate);
+            item.replaceChildren(checkbox, taskInfo, editButton, deleteButton);
+        });
+    });
+
     // удаление
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Удалить';
@@ -145,16 +196,10 @@ form.addEventListener('submit', function(event) {
         }
     });
 
-    const taskInfo = document.createElement('div');
-    taskInfo.className = 'task-info';
-
-    taskInfo.append(taskText, taskDate);
-    item.append(checkbox, taskInfo, deleteButton);
+    item.append(checkbox, taskInfo, editButton, deleteButton);
     taskList.append(item);
 
     emptyMessage.hidden = true;
 
     form.reset();
 });
-
-
