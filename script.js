@@ -32,3 +32,49 @@ addButton.textContent = 'Добавить';
 
 form.append(taskInput, dateInput, addButton);
 main.append(form);
+
+const controls = document.createElement('section');
+controls.className = 'controls';
+
+const searchInput = document.createElement('input');
+searchInput.type = 'search';
+searchInput.placeholder = 'Поиск задачи';
+
+const filterSelect = document.createElement('select');
+
+const filters = ['Все задачи', 'Завершенные', 'Незавершенные'];
+
+filters.forEach((filter, index) => {
+    const option = document.createElement('option');
+    option.value = ['all', 'done', 'active'][index];
+    option.textContent = filter;
+    filterSelect.append(option);
+});
+
+const sortSelect = document.createElement('select');
+
+const sorts = ['Без сортировки', 'Сначала ближайшие', 'Сначала поздние'];
+
+sorts.forEach((sort, index) => {
+    const option = document.createElement('option');
+    option.value = ['default', 'asc', 'desc'][index];
+    option.textContent = sort;
+    sortSelect.append(option);
+});
+
+controls.append(searchInput, filterSelect, sortSelect);
+main.append(controls);
+
+const taskSection = document.createElement('section');
+taskSection.className = 'task-section';
+
+const taskList = document.createElement('ul');
+taskList.className = 'task-list';
+
+const emptyMessage = document.createElement('p');
+emptyMessage.className = 'empty-message';
+emptyMessage.textContent = 'Список пуст';
+
+taskSection.append(taskList, emptyMessage);
+main.append(taskSection);
+
