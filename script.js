@@ -1,3 +1,4 @@
+
 const style = document.createElement('link');
 style.rel = 'stylesheet';
 style.href = 'style.css';
@@ -88,9 +89,10 @@ main.append(taskSection);
 // добавление, удаление и выполнение задач
 const tasks = [];
 
-// фильтрация задач
+// фильтрация и поиск задач
 function filterTasks() {
     const filter = filterSelect.value;
+    const search = searchInput.value.trim().toLowerCase();
 
     taskList.querySelectorAll('.task-item').forEach(item => {
         const task = tasks.find(t => t.id === Number(item.dataset.id));
@@ -99,17 +101,22 @@ function filterTasks() {
             return;
         }
 
-        if (filter === 'all') {
-            item.style.display = '';
-        } else if (filter === 'done') {
-            item.style.display = task.done ? '' : 'none';
-        } else {
-            item.style.display = task.done ? 'none' : '';
+        let matchesFilter = true;
+
+        if (filter === 'done') {
+            matchesFilter = task.done;
+        } else if (filter === 'active') {
+            matchesFilter = !task.done;
         }
+
+        const matchesSearch = task.text.toLowerCase().includes(search);
+
+        item.style.display = matchesFilter && matchesSearch ? '' : 'none';
     });
 }
 
 filterSelect.addEventListener('change', filterTasks);
+searchInput.addEventListener('input', filterTasks);
 
 form.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -194,6 +201,7 @@ form.addEventListener('submit', function(event) {
 
             taskInfo.replaceChildren(taskText, taskDate);
             item.replaceChildren(checkbox, taskInfo, editButton, deleteButton);
+            filterTasks();
         });
 
         cancelButton.addEventListener('click', function() {
