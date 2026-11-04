@@ -1,4 +1,3 @@
-
 const style = document.createElement('link');
 style.rel = 'stylesheet';
 style.href = 'style.css';
@@ -118,6 +117,30 @@ function filterTasks() {
 filterSelect.addEventListener('change', filterTasks);
 searchInput.addEventListener('input', filterTasks);
 
+// сортировка задач
+function sortTasks() {
+    const sort = sortSelect.value;
+    const sortedTasks = [...tasks];
+
+    if (sort === 'asc') {
+        sortedTasks.sort((a, b) => a.date.localeCompare(b.date));
+    } else if (sort === 'desc') {
+        sortedTasks.sort((a, b) => b.date.localeCompare(a.date));
+    }
+
+    sortedTasks.forEach(task => {
+        const item = taskList.querySelector('[data-id="' + task.id + '"]');
+
+        if (item) {
+            taskList.append(item);
+        }
+    });
+
+    filterTasks();
+}
+
+sortSelect.addEventListener('change', sortTasks);
+
 form.addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -201,7 +224,7 @@ form.addEventListener('submit', function(event) {
 
             taskInfo.replaceChildren(taskText, taskDate);
             item.replaceChildren(checkbox, taskInfo, editButton, deleteButton);
-            filterTasks();
+            sortTasks();
         });
 
         cancelButton.addEventListener('click', function() {
@@ -234,7 +257,7 @@ form.addEventListener('submit', function(event) {
     taskList.append(item);
 
     emptyMessage.hidden = true;
-    filterTasks();
+    sortTasks();
 
     form.reset();
 });
