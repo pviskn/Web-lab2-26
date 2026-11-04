@@ -1,0 +1,97 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 40px 20px;
+    min-height: 100vh;
+    background-color: #eef2ff;
+    font-family: Arial, sans-serif;
+    color: #263238;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    margin: 0 0 10px;
+    font-size: 32px;
+    color: #3949ab;
+}
+
+header p {
+    margin: 0;
+    color: #777;
+    font-size: 16px;
+}
+
+.task-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+input, select, button {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+input, select {
+    border: 1px solid #ccc;
+    background-color: white;
+}
+
+.task-form input[type="text"] {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-form input[type="date"] {
+    width: 150px;
+}
+
+button {
+    border: none;
+    background-color: #3949ab;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #303f9f;
+}
+
+input:focus, select:focus {
+    outline: 2px solid #7986cb;
+    outline-offset: 1px;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.controls input {
+    flex: 1;
+    min-width: 0;
+}
+
+.controls select {
+    min-width: 0;
+}
