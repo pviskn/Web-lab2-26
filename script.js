@@ -1,3 +1,7 @@
+const style = document.createElement('link');
+style.rel = 'stylesheet';
+style.href = 'style.css';
+document.head.append(style);
 
 const main = document.createElement('main');
 main.className = 'container';
