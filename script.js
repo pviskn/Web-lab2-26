@@ -135,7 +135,13 @@ form.addEventListener('submit', function(event) {
         }
     });
 
-    item.append(taskText, taskDate, deleteButton);
+    
+    const taskInfo = document.createElement('div');
+    taskInfo.className = 'task-info';
+
+    taskInfo.append(taskText, taskDate);
+    item.append(taskInfo, deleteButton);
+
     taskList.append(item);
 
     emptyMessage.hidden = true;

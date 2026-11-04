@@ -143,3 +143,42 @@ input:focus, select:focus {
     background-color: #d32f2f;
 }
 
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background-color: #f5f6ff;
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.task-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+}
+
+.task-info span:first-child {
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.task-info span:nth-child(2) {
+    color: #777;
+    font-size: 13px;
+}
+
+.task-item .delete-button {
+    margin-left: auto;
+}
