@@ -19,7 +19,7 @@ header.append(title, description);
 main.append(header);
 document.body.append(main);
 
-// добавление задачи
+// форма добавления задачи
 const form = document.createElement('form');
 form.className = 'task-form';
 
@@ -72,7 +72,7 @@ sorts.forEach((sort, index) => {
 controls.append(searchInput, filterSelect, sortSelect);
 main.append(controls);
 
-// задачи
+// список задач
 const taskSection = document.createElement('section');
 taskSection.className = 'task-section';
 
@@ -86,7 +86,7 @@ emptyMessage.textContent = 'Список пуст';
 taskSection.append(taskList, emptyMessage);
 main.append(taskSection);
 
-// добавление и удаление
+// добавление, удаление и выполнение задач
 const tasks = [];
 
 form.addEventListener('submit', function(event) {
@@ -111,12 +111,22 @@ form.addEventListener('submit', function(event) {
     const item = document.createElement('li');
     item.className = 'task-item';
 
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'task-checkbox';
+
+    checkbox.addEventListener('change', function() {
+        task.done = checkbox.checked;
+        item.classList.toggle('completed', task.done);
+    });
+
     const taskText = document.createElement('span');
     taskText.textContent = task.text;
 
     const taskDate = document.createElement('span');
     taskDate.textContent = task.date;
 
+    // удаление
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Удалить';
     deleteButton.className = 'delete-button';
@@ -135,17 +145,16 @@ form.addEventListener('submit', function(event) {
         }
     });
 
-    
     const taskInfo = document.createElement('div');
     taskInfo.className = 'task-info';
 
     taskInfo.append(taskText, taskDate);
-    item.append(taskInfo, deleteButton);
-
+    item.append(checkbox, taskInfo, deleteButton);
     taskList.append(item);
 
     emptyMessage.hidden = true;
 
     form.reset();
 });
+
 

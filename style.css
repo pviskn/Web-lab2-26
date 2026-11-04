@@ -182,3 +182,19 @@ input:focus, select:focus {
 .task-item .delete-button {
     margin-left: auto;
 }
+
+.task-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #3949ab;
+}
+
+.task-item.completed {
+    background-color: #e8eaf6;
+}
+
+.task-item.completed .task-info span:first-child {
+    text-decoration: line-through;
+    color: #999;
+}
