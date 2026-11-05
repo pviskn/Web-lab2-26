@@ -88,6 +88,11 @@ main.append(taskSection);
 // добавление, удаление и выполнение задач
 const tasks = [];
 
+// сохранение задач
+function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
 // фильтрация и поиск задач
 function filterTasks() {
     const filter = filterSelect.value;
@@ -141,23 +146,8 @@ function sortTasks() {
 
 sortSelect.addEventListener('change', sortTasks);
 
-form.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const text = taskInput.value.trim();
-    const date = dateInput.value;
-
-    if (text === '' || date === '') {
-        return;
-    }
-
-    const task = {
-        id: Date.now(),
-        text: text,
-        date: date,
-        done: false
-    };
-
+// создание задачи
+function addTask(task) {
     tasks.push(task);
 
     const item = document.createElement('li');
@@ -167,10 +157,14 @@ form.addEventListener('submit', function(event) {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.className = 'task-checkbox';
+    checkbox.checked = task.done;
+
+    item.classList.toggle('completed', task.done);
 
     checkbox.addEventListener('change', function() {
         task.done = checkbox.checked;
         item.classList.toggle('completed', task.done);
+        saveTasks();
         filterTasks();
     });
 
@@ -224,6 +218,8 @@ form.addEventListener('submit', function(event) {
 
             taskInfo.replaceChildren(taskText, taskDate);
             item.replaceChildren(checkbox, taskInfo, editButton, deleteButton);
+
+            saveTasks();
             sortTasks();
         });
 
@@ -246,6 +242,8 @@ form.addEventListener('submit', function(event) {
         }
 
         item.remove();
+
+        saveTasks();
         filterTasks();
 
         if (tasks.length === 0) {
@@ -258,6 +256,34 @@ form.addEventListener('submit', function(event) {
 
     emptyMessage.hidden = true;
     sortTasks();
+}
 
+// добавление новой задачи
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const text = taskInput.value.trim();
+    const date = dateInput.value;
+
+    if (text === '' || date === '') {
+        return;
+    }
+
+    const task = {
+        id: Date.now(),
+        text: text,
+        date: date,
+        done: false
+    };
+
+    addTask(task);
+    saveTasks();
     form.reset();
+});
+
+// загрузка сохраненных задач
+const savedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+
+savedTasks.forEach(task => {
+    addTask(task);
 });
