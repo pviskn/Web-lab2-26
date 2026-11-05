@@ -87,6 +87,7 @@ main.append(taskSection);
 
 // добавление, удаление и выполнение задач
 const tasks = [];
+let draggedItem = null;
 
 // сохранение задач
 function saveTasks() {
@@ -153,6 +154,55 @@ function addTask(task) {
     const item = document.createElement('li');
     item.className = 'task-item';
     item.dataset.id = task.id;
+
+    // перетаскивание задач
+    item.draggable = true;
+
+    item.addEventListener('dragstart', function(event) {
+        if (sortSelect.value !== 'default') {
+            event.preventDefault();
+            return;
+        }
+
+        draggedItem = item;
+        event.dataTransfer.effectAllowed = 'move';
+        item.classList.add('dragging');
+    });
+
+    item.addEventListener('dragover', function(event) {
+        if (draggedItem === null || draggedItem === item) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const middle = item.getBoundingClientRect().top + item.offsetHeight / 2;
+
+        if (event.clientY < middle) {
+            taskList.insertBefore(draggedItem, item);
+        } else {
+            taskList.insertBefore(draggedItem, item.nextSibling);
+        }
+    });
+
+    item.addEventListener('dragend', function() {
+        item.classList.remove('dragging');
+
+        if (draggedItem === null) {
+            return;
+        }
+
+        const newOrder = Array.from(taskList.children).map(element => {
+            return Number(element.dataset.id);
+        });
+
+        tasks.sort((a, b) => {
+            return newOrder.indexOf(a.id) - newOrder.indexOf(b.id);
+        });
+
+        draggedItem = null;
+        saveTasks();
+    });
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';

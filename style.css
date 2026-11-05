@@ -214,3 +214,16 @@ input:focus, select:focus {
     width: 100%;
     min-width: 0;
 }
+
+.task-item {
+    cursor: grab;
+}
+
+.task-item.dragging {
+    opacity: 0.5;
+    background-color: #c5cae9;
+}
+
+.task-item:active {
+    cursor: grabbing;
+}
