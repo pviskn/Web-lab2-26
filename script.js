@@ -3,6 +3,12 @@ style.rel = 'stylesheet';
 style.href = 'style.css';
 document.head.append(style);
 
+const favicon = document.createElement('link');
+favicon.rel = 'icon';
+favicon.type = 'image/png';
+favicon.href = 'icon/favicon.png';
+document.head.append(favicon);
+
 const main = document.createElement('main');
 main.className = 'container';
 
